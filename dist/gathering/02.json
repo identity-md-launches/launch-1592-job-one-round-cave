@@ -1,10 +1,30 @@
 {
-  "name": "Not painted yet",
-  "image": "https://api.imd.fun/artifacts/250525790c1987cbb52114bd4e77926f023ac1dc10b73ffc2e1f56e32dfb8a36",
+  "name": "Offset Stones",
+  "image": "https://api.imd.fun/artifacts/cdfe605ff9bd7cea90c3f4c06456cd93debebaa2053969718441dcf271eb4029",
   "attributes": [
     {
       "trait_type": "Cave",
       "value": "Moss"
+    },
+    {
+      "trait_type": "Wall",
+      "value": "Gathering"
+    },
+    {
+      "trait_type": "Number",
+      "value": 2
+    },
+    {
+      "trait_type": "Left behind",
+      "value": "Change Context"
+    },
+    {
+      "trait_type": "Meaning",
+      "value": "Pepe sets offset stones beside the bowl for evidence gathered at different blocks."
+    },
+    {
+      "trait_type": "One thing",
+      "value": "Gathering"
     }
   ]
 }

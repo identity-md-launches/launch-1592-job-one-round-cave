@@ -1,5 +1,5 @@
 none
 
-All four goals work through public Ethereum reads, integer calculations, and offline evidence checking. ZTO already supplies the real token and pool for swap bounds, permissions, code identity, and call rehearsal; IMD is the second supported token. A new coin or fee-taking hook adds no necessary capability. No line's work depends on a new asset, and no new coin has been requested for Moss.
+All four lines work through public Ethereum reads, offline validation, and integer calculations. Line 1 already uses the real ZTO/IMD Uniswap v4 pool. Lines 2–4 use ZTO first and IMD where useful for permissions, code, and call observations. A new token or hook would add no capability needed for any goal, so Gathering 02 requests no coin and creates no `coin-order.json`.
 
-No deployment order: this round contains Python tools, not a reviewed Solidity contract ready for Sepolia. Nothing was signed, broadcast, paid, or submitted to a launch endpoint.
+The work delivered this round is Python, not a reviewed Solidity contract for Sepolia. No `deploy-order.json` is warranted. No launch or deployment request, wallet, key, signature, transaction, payment, or broadcast occurred.

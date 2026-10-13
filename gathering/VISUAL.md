@@ -1,21 +1,9 @@
-# Gathering wall 01 — Four Trails, One Bowl
+# Gathering wall 02 — Offset Stones
 
-Built with the installed built-in imagegen tool, editing the supplied bare cave. There was no previous gathering record or wall; this is Moss's first gathering. The original cave and all four line walls remain unchanged.
+The input was the exact PNG named in `dist/gathering/01.json`, downloaded from its artifact URL with a tool-specific User-Agent and verified against its SHA-256 before editing. Its dimensions are **1254 × 1254**, 8-bit RGB. The image tool produced a new flat ochre-and-charcoal paired-stone motif. To preserve earlier marks, only the generated region at x=785..1009, y=718..894 was feathered onto the ancestor image; every pixel outside that region is identical to Gathering 01's wall. The previous Pepe, two hands, four trails, bowl, framing, major cracks, and torchlit rock remain in place. The motif adds no hand or new figure.
 
-## Result
+- Final PNG: `artifacts/gathering/wall-v2.png` and matching `artifacts/gathering/wall.png`, **1254 × 1254**, 8-bit RGB PNG. SHA-256: `cdfe605ff9bd7cea90c3f4c06456cd93debebaa2053969718441dcf271eb4029`.
+- Thumbnail: `dist/gathering/02.jpg`, **512 × 512** baseline JPEG, **52,303 bytes**, made with the existing standard-library [Wall thumbnail](../shared/wall-thumbnail/README.md) tool.
+- Record: `dist/gathering/02.json`, with the PNG's lowercase SHA-256 in the artifact URL, Number 2, Wall Gathering and the exact requested six traits.
 
-- Wall: `artifacts/gathering/wall.png`, **1254 × 1254**, **8-bit RGB PNG**, matching the input cave's square dimensions. SHA-256: `382a8e06b83402867cbc75d03e9447f542c470493cb8c5ec6a7b2ec5a25dfd39`.
-- Thumbnail: `dist/gathering/01.jpg`, **512 × 512**, baseline three-component JPEG, **52,174 bytes**. Encoded with the promoted standard-library Line 4 helper.
-- Record: `dist/gathering/01.json`, with the exact requested three top-level keys and six traits. Its image URL uses the complete PNG's lowercase SHA-256.
-
-## Final prompt
-
-Use case: precise-object-edit. Edit the supplied bare cave wall, preserving its EXACT 1254 by 1254 square size, warm rock surface, every crack, torchlight, color, framing and edges. Add only a modest prehistoric cave painting in the central clear stone: Pepe the frog as a simple charcoal and ochre cave figure, unmistakable wide flat mouth and two big heavy-lidded eyes, rough hand-drawn burnt-stick contours, chalk white accents and worn red/yellow ochre. His two arms extend to either side with open hands: exactly FIVE digits on EACH hand (four long fingers and one thumb), clearly separated for counting. Beneath him four short uneven ochre trails converge into one shallow charcoal bowl, representing four crafts meeting. Small sparse composition leaving much bare rock for later generations. All additions flat earth pigment on the original rock with texture showing through, uneven and slightly weathered as Lascaux/Chauvet. No letters, numbers, words, captions, signature, logos, watermark, border, frame, political symbols, real people, photographic figures or 3D figures. Keep backdrop unchanged. Save actual PNG image.
-
-## Chosen review and limits
-
-Visually inspected the original cave, the generated image, the saved full PNG, and the decoded JPEG. Counted **five digits on the image-left hand and five on the image-right hand**, each four fingers plus a thumb. No extra hands or hand stencils. Pepe has a broad mouth and heavy-lidded eyes; his outlines are uneven charcoal, red/yellow ochre and small chalk accents with bare stone showing through. Four trails meet the shallow bowl. No writing, numbers, logos, frames, real people or disallowed symbols were observed.
-
-The top overhang, left vertical fissure, right dark opening, foreground rocks and torchlit center retain their original placement and framing. No ancestral marks existed on this gathering wall. This was a generative edit, so exact background pixel identity is **not claimed**; the visual review found no displaced major rock feature, erased mark, changed framing or unmet visual requirement. Pigment wear and small surface variation remain subjective. The PNG decoder checked every chunk CRC and the raster size before encoding the JPEG. Human review can inspect the actual bytes; structural checks do not certify aesthetics.
-
-The generated image was transferred from the tool's returned image bytes directly into the required output. Only the final wall and its numbered JPEG were saved as new pictures in the workspace. No dependency was installed.
+Full PNG and decoded JPEG were visually inspected. The ancestor Pepe remains recognizable by the wide mouth and heavy-lidded eyes. His image-left and image-right hands each have **five digits: four fingers and one thumb**. The added small paths sit to the image-right of the bowl and use red/yellow ochre and charcoal; stone shows through. No letters, numbers, captions, logos, borders, people, political or hateful symbols, or additional hands were observed. No unmet visual requirement was identified. The generative motif and its local rock texture are subjective; exact pixel preservation is claimed only outside the stated addition region. The structural verifier does not certify the visual review.

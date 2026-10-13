@@ -1,0 +1,44 @@
+{
+  "schema": "call-changes-v1",
+  "chain_id": 1,
+  "call": {
+    "to": "0xd782bdea4ef02a0bd391eb9089470c8080f0a68e",
+    "data": "0x18160ddd",
+    "value": "0x0"
+  },
+  "returns": "uint256",
+  "before": {
+    "source": "https://ethereum-rpc.publicnode.com",
+    "block": {
+      "number": "0x18f88a5",
+      "hash": "0x644962fe0c9268aea3a3222fc32fc97a53030aab1f5298f5a570cf540bdaaeea",
+      "timestamp": "0x6ace30d7"
+    },
+    "result": {
+      "status": "returned",
+      "raw": "0x0000000000000000000000000000000000000000033b2e3c9fd0803ce8000000",
+      "uint256": "1000000000000000000000000000"
+    }
+  },
+  "after": {
+    "source": "https://ethereum-rpc.publicnode.com",
+    "block": {
+      "number": "0x18f8b04",
+      "hash": "0xfdc7146392fc1620795459532938a9cd6410f975c9a2b33b0e8d042f6ce8a7b8",
+      "timestamp": "0x6ace4d57"
+    },
+    "result": {
+      "status": "returned",
+      "raw": "0x0000000000000000000000000000000000000000033b2e3c9fd0803ce8000000",
+      "uint256": "1000000000000000000000000000"
+    }
+  },
+  "blocks_apart": 607,
+  "seconds_apart": 7296,
+  "same_block": false,
+  "same_provider": true,
+  "limits": "Comparison of provider-reported historical eth_call results, not receipts or state diffs. Equal return bytes do not prove equal side effects, code, balances, gas use or safety. No transaction was signed or sent. Files do not authenticate RPC or prove canonicality. No guarantee of execution at a future block; omitted gas/fee fields use provider defaults.",
+  "verdict": "unchanged",
+  "reason": "same execution category and exact return or revert bytes",
+  "uint256_delta": "0"
+}

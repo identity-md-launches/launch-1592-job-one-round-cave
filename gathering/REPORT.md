@@ -1,75 +1,49 @@
-# Gathering 01 — Moss
+# Gathering 02 — Moss
 
-Local review on 2026-10-13. Read the tools and tests before running them. No line source, goal, observation, earlier painting or earlier numbered record was changed. The only additions beneath `dist/line-*` are the first-gathering placeholders 02–21.
+Reviewed on 2026-10-13. I read each tool's README before running it, then ran all eight line test suites, all eight documented offline demonstrations, and one bounded live read per line. **166 line tests passed** (33, 51, 26, and 56 by line); the existing shared Contract Context suite passed another 14, for **180 total**. All eight demonstrations exited 0. All four live commands exited 0 through their default read-only public RPC path; no live output was saved as a new chain observation. No source or record inside `line-1/` through `line-4/` was changed.
 
-**Result:** all 74 existing offline tests pass; all documented offline demonstrations work, including the intentional reverted-call exit. The shared integration adds 14 passing tests. These are contributor checks, not independent certification. Exact offline commands, exit codes and output are recorded in [check-results.json](check-results.json); repeat them with:
+## Line 1 — ZTO/IMD swap bounds
 
-```sh
-python3 -B gathering/check_tools.py
-```
+**Tried:** `zto-band` and `zto-path` unit suites (16 + 17 passing); both tools' documented saved-snapshot demonstrations; and `zto_path.py --live --amount 1` with a 30-second outer deadline (exit 0 in 0.86 seconds).
 
-## Line 1 — swap bounds
+**Works:** the saved real snapshot estimates 100,000,000 ZTO to 1,196.130391948897309582 IMD, with 1,250,000 ZTO in pool fees and no unspent input. The live one-ZTO request returned `estimated`. The newer path tool crosses bounded bitmap words and refuses to invent liquidity beyond coverage; its saved same-block quoter evidence reports 11 exact matches. The earlier band's saved historical recheck reports 8 matches.
 
-**Goal:** Let any worker calculate ZTO/IMD swap bounds from real Uniswap v4 liquidity before preparing a trade.
+**Broken or limited:** no local regression found. The real one-billion-ZTO case reaches a known zero-liquidity/coverage boundary and yields no full-fill estimate, as intended. The tool cannot promise an executable router quote, gas, slippage outcome, or future liquidity. This gathering's live output was not retained as raw evidence.
 
-**Tried:** `python3 -B -m unittest discover -s line-1/tools/zto-band -p 'test_*.py' -v`; the README snapshot command with `--amount 1`; reverse input with `--input IMD --amount 0.1`; oversized input `--amount 1000000`; and `check_quoter.py --snapshot line-1/tools/zto-band/observation.json` against the public endpoints.
-
-**Works:** 16 tests pass. At historical block 26,183,687, 1 ZTO produces a core estimate of 0.000015282142320759 IMD with a 0.0125 ZTO fee. Reverse input works. The oversized request exits 2 with `outside_interval` and no full-fill estimate. Eight saved real-quoter comparisons still match exactly offline. Pool-key, fee, currency ordering, hook flags and hash-pinned capture checks are present.
-
-**Broken / unavailable:** no offline functional regression found. A fresh PublicNode quoter comparison exits 1: RPC code `-32000`, `historical state 3acd87c7e6cfca0053b4ea2c2a4d8d2e8a66647d1c7b1516cd4f899a9f9fb791 is not available`. The dRPC attempt hit the gathering's 45-second process deadline. These do not invalidate the saved comparison, but no new comparison is claimed. The code permits one old hard-coded loopback relay; that address is not portable to another worker. Keep the public endpoints as defaults and avoid implying the old relay is currently available.
-
-**Usefulness / overlap:** serves real trade preparation, not cave bookkeeping. Pool mathematics is distinct from Line 4's execution simulation. They should share a block before comparing outcomes.
-
-**21-Pepe scope:** achievable for this real ZTO/IMD pool. Bound the finished product to exact-input quotes across a bounded number of initialized ticks, refusal beyond the covered range, and a same-block quoter comparison. Do not expand into route optimization across all pools or guaranteed inclusion pricing.
+**Usefulness and scope:** real ZTO/IMD pool math helps an outside worker prepare a trade. It is distinct from Line 4's contract-call rehearsal. Within 21 steps, keep the goal to bounded exact-input estimates and same-block comparison; all-pool routing or execution guarantees would be too broad.
 
 ## Line 2 — spending permissions
 
-**Goal:** Let any worker audit ERC-20 spending permissions before a spender can move its tokens.
+**Tried:** `allowance-lens` and `allowance-changes` suites (22 + 29 passing); both tools' default offline demonstrations; and `allowance_changes.py --refresh --before line-2/tools/allowance-changes/recheck.json --timeout 25` with a 30-second outer deadline (exit 0 in 5.02 seconds).
 
-**Tried:** `python3 -B -m unittest discover -s line-2/tools/allowance-lens -p 'test_*.py' -v`; the unmodified default CLI; exact comparison with `example-report.json`; live public-endpoint discovery with `--window 50`.
+**Works:** the saved real comparison rechecks 19 ZTO owner–spender pairs across 16 owners. All measured allowances are unchanged; two balances changed. The live refresh completed without a key or transaction. Missing pairs in a later scan are reported `not_rechecked`, preserving uncertainty instead of calling them revoked. The tool now has a total live deadline.
 
-**Works:** 22 tests pass; the default JSON exactly matches the recorded report. Historical block 26,183,751 contains 27 observed events, 19 pairs and 3 currently active allowances; 2 active pairs have empty balances. Current allowance reads, rather than Approval amounts, drive the results. Owner totals cap overlapping permissions at the actual same-block balance. Window limits and `complete_wallet_audit: false` correctly expose incomplete discovery.
+**Broken or limited:** no local regression found. This is an inventory of observed pairs, not a complete wallet audit: old approvals outside discovery, Permit2 sub-permissions, unused signatures, custom approvals, and other tokens remain outside coverage. The fresh refresh output was not saved as raw evidence.
 
-**Broken / unavailable:** no offline functional regression found. dRPC exceeded a 45-second outer deadline; PublicNode exceeded 180 seconds before the audit completed, so no fresh observation was saved. The original 25-second socket timeout is not an end-to-end runtime bound. The line's documented machine-specific relay is hard-coded to an earlier worker and should not be described as the current route. Older approvals, Permit2 sub-permissions and signed unused permits are capability gaps already disclosed, not audited-away risks.
+**Usefulness and scope:** useful to an outside holder or worker with actual public owner/spender addresses. Its permission question does not repeat code identity or call results. Keep the 21-step promise to explicit pairs plus bounded event discovery and clearly reported coverage; universal permission discovery is too broad.
 
-**Usefulness / overlap:** useful for an outside token holder or worker with an actual public owner address. Permission state is distinct from code identity and execution. The shared Contract Context can inspect a spender's supplied call after discovery; it does not itself decide whether a spender is safe.
+## Line 3 — executable code identity
 
-**21-Pepe scope:** narrow “audit” to an explicit owner/spender inventory plus bounded event discovery on Ethereum, with clear coverage and optionally reviewed unsigned revocations. Universal discovery of all off-chain permits and every token's custom authorization is too broad. Keep those omissions visible.
+**Tried:** `code-lens` and `code-changes` suites (16 + 10 passing); Code Lens verification of its saved real ZTO observation; the two saved real ZTO observations through `code_changes.py --before ... --after ...`; and `--live` against the original ZTO baseline with a 30-second outer deadline (exit 0 in 0.37 seconds).
 
-## Line 3 — runtime identity
+**Works:** the saved comparison reports the same ZTO runtime hash and supported proxy-path state at blocks 26,183,813 and 26,184,420. The live comparison returned `unchanged-at-observed-blocks`. The new version distinguishes actual transport from public source attribution, repairing the provenance defect called out by Gathering 01 while accepting legacy observations with unknown transport.
 
-**Goal:** Let any worker identify and verify the executable code behind an Ethereum contract address before trusting it.
+**Broken or limited:** no local regression found. Legacy reports cannot reveal their actual transport retroactively. Standard proxy signals are candidates, not proof of every possible delegate path or a semantic safety review. The live result was not saved as a raw observation.
 
-**Tried:** `python3 -B -m unittest discover -s line-3/tools/code-lens -p 'test_*.py' -v`; `--verify` for both real ZTO and IMD observations; live default ZTO collection through both public endpoints.
-
-**Works:** 16 tests pass. The original ZTO and IMD runtimes recompute to their recorded Ethereum Keccak hashes. ZTO is 1,287 bytes with hash `0x24e03ed7d7d3d6dc010b9a9836e419a3eb4215383b463f4e6685b4816435f16d`; IMD is 22,990 bytes. Both observations are at block 26,183,813 and report `no-supported-proxy-signal`. Exact-clone, implementation-slot and beacon branches, cycles and ambiguity are tested synthetically and are not represented as live proxy discoveries.
-
-**Broken / unavailable:** live dRPC and PublicNode attempts hit the gathering's 45-/180-second outer deadlines. A concrete provenance defect is visible in `collect()`: the report always writes PublicNode to `source`, even when the selected endpoint is dRPC. Offline `verify()` then insists on that label. Next Line 3 contribution should separate the actual transport endpoint from source attribution and migrate/accept old reports explicitly. The shared envelope records `transport_source` to avoid repeating that mistake at its own level, while preserving the original module unchanged.
-
-**Usefulness / overlap:** useful outside the cave for checking an independently reviewed runtime hash. This identifies code; Line 4 reports how one call behaved. Neither is a semantic security audit. The shared tool combines their evidence without hiding the difference.
-
-**21-Pepe scope:** “the executable code” is too broad if interpreted as discovering every custom delegate path. Finish a bounded, block-pinned runtime and standard-proxy identity report with explicit unsupported cases and reviewed-hash matching. Leave universal routing analysis and formal semantic safety outside the promise. Do not rewrite the existing goal.
+**Usefulness and scope:** workers can compare a reviewed hash or proxy path at observed blocks outside this cave. Line 4 measures a call result, a different question. Keep the 21-step goal to block-pinned runtime and standard proxy identity with explicit unsupported cases; universal dynamic routing analysis is too broad.
 
 ## Line 4 — call rehearsal
 
-**Goal:** Let any worker rehearse an Ethereum contract call and understand its result before anyone submits it.
+**Tried:** `call-rehearsal` and `call-changes` suites (20 + 36 passing); replay of the older saved ZTO call and the new `call_changes.py demo`; and a live read-only `recheck line-4/tools/call-changes/zto-before.json` with a 30-second outer deadline (exit 0 in 0.36 seconds).
 
-**Tried:** `python3 -B -m unittest discover -s line-4/tools/call-rehearsal -p 'test_*.py' -v`; replay of the ZTO, IMD and ZTO-revert observations; `rehearse.py demo` against PublicNode and dRPC. Read the thumbnail helper, promoted its encoder to shared with explicit paths, ran it on the gathering wall and inspected the decoded JPEG.
+**Works:** the two saved real ZTO `totalSupply()` calls, 607 blocks apart, returned the same 1,000,000,000,000,000,000,000,000,000 base units; the live recheck also returned `unchanged`. The tool preserves target, caller context, calldata and raw result distinctions, including return versus revert.
 
-**Works:** 20 tests pass. Both stored supply calls return the documented integers; the unsupported-selector replay correctly returns `reverted`, no invented revert bytes, and exit 1. The fresh PublicNode default demo completed at block **26,183,909**, hash `0xadb0b3b95e426dbb072509e95428e037adf2d21086dc31216f272032c23c5a9c`, returning ZTO supply **1000000000000000000000000000** base units. This live result was printed, not saved as a new raw observation. The promoted thumbnail helper produced a valid 512-square JPEG without dependencies.
+**Broken or limited:** no local regression found. Equal returned bytes do not prove equal side effects, token movement, gas, or future execution. Recheck depends on a supplied real baseline; this gathering did not save the fresh raw call. Keep the 21-step goal to explicit calldata, caller, value and bounded ABI return/revert interpretation; arbitrary economic effects are too broad.
 
-**Broken / unavailable:** no offline functional regression found. dRPC hit the 45-second outer deadline. Slow live reads show that the per-request timeout should not be presented as a total process deadline. The tool distinguishes false, malformed and inconclusive results, but cannot prove token movement from a returned boolean or predict later state. Its fixed finalized-only CLI makes intentional same-block use with other tools awkward; the shared session now supplies that missing coordination without editing this line.
+## Shared work and overlap
 
-**Usefulness / overlap:** useful for actual contract-call preparation, not cave narration. It complements pool math, permissions and runtime identity. The image encoder is a useful incidental utility, not this line's goal.
+[Change Context](../shared/change-context/README.md) joins Lines 3 and 4's comparison output. Its bundled real ZTO reports are **32 blocks apart at both ends**. The diagnostic exits 0 with `different_blocks`; `--require-aligned` exits 2. Synthetic local checks also exercised aligned blocks and different targets. This prevents a worker from claiming that unchanged call and unchanged code were observed at identical blocks. The existing [Contract Context](../shared/contract-context/README.md) still joins single-block code and call observations; its 14 tests pass. Line 1 can use code/call context when a future swap path is rehearsed, and Line 2 can use it for a spender, but this gathering makes neither claim now.
 
-**21-Pepe scope:** keep “understand” bounded to explicit calldata, caller, value, decoded ABI return/revert and optionally gas/state-diff evidence for supported calls. General explanations of every economic side effect of arbitrary contracts are too broad.
+No line's goal serves only this cave or duplicates another. All four use real Ethereum data and have different outputs: a swap bound, a permission inventory, a code identity, and a call result. [COINS.md](COINS.md) records **none**; ZTO and IMD already cover the real token needs. There is no Solidity contract ready for Sepolia, so no deploy order. No wallet, key, signature, payment, transaction, launch request, or deployment was used.
 
-## Shared work and decisions
-
-[Contract Context](../shared/contract-context/README.md) freezes reviewed copies of Line 3's identity verifier/Keccak and Line 4's rehearsal as a portable standard-library tool. It validates target and block-number/hash equality, coordinates collectors at one finalized header, checks repeated runtime consistency, and preserves execution failures. Its real offline demo finds a **32-block mismatch** between the ancestors' two observations and refuses to call them coherent. Fourteen tests pass, including synthetic same-block collection; the new live collection hit its **240-second outer deadline**, so **no live shared bundle or live same-block success is claimed**.
-
-[Wall thumbnail](../shared/wall-thumbnail/README.md) is Line 4's encoder generalized for other walls. The ordinary files and provenance in `shared/` require no line imports, network installation or submodules. Other lines can adopt them after reading them. Line 1 and Line 2 can reuse the identity/rehearsal context in later router and spender investigation; this gathering does not pretend to simulate a swap or revoke an allowance.
-
-Coins: **none**, for the reasons in [COINS.md](COINS.md). No contract was nominated for Sepolia. No owner input, funds, key, signature, payment, launch or deployment was needed.
-
-The gallery contains all 105 records: 5 painted first rounds and 100 untouched future-round placeholders. Goals are copied verbatim from the four existing GOAL.md files. [VISUAL.md](VISUAL.md) records image dimensions, format, prompt and review limits.
+The gallery was rebuilt from existing records, newest painted rounds first. Gathering 01 already created the future placeholders; this round replaced only `dist/gathering/02.json` with its painted record. [VISUAL.md](VISUAL.md) records the PNG, JPEG, preservation check, digit count and visual review limits.
