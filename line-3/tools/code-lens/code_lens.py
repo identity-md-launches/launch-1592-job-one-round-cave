@@ -12,7 +12,9 @@ from keccak import keccak256
 PUBLIC_RPC = 'https://ethereum-rpc.publicnode.com'
 ZTO = '0xd782bdea4ef02a0bd391eb9089470c8080f0a68e'
 IMD = '0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7'
-SCHEMA = 'code-lens-v1'
+SCHEMA = 'code-lens-v1'  # Historical reports remain readable.
+CURRENT_SCHEMA = 'code-lens-v2'
+PUBLIC_SOURCES = {PUBLIC_RPC, 'https://eth.drpc.org'}
 MAX_CODE = 24576
 MAX_DEPTH = 4
 MAX_RESPONSE = 100000
@@ -153,6 +155,36 @@ def resolve_node(node):
     return 'no-supported-proxy-signal', None
 
 
+def provenance(report):
+    """Describe source labels without claiming to authenticate an RPC provider."""
+    if report['schema'] == SCHEMA:
+        require(report['source'] == PUBLIC_RPC, 'unexpected legacy public source attribution')
+        return {'transport_source': 'unknown-legacy', 'source': PUBLIC_RPC,
+                'source_kind': 'legacy-attribution-only'}
+    require(report['schema'] == CURRENT_SCHEMA, 'wrong report schema')
+    source = report['source']
+    transport = report['transport_source']
+    kind = report['source_kind']
+    require(source in PUBLIC_SOURCES, 'unexpected public source attribution')
+    if transport == 'worker-provided-relay':
+        require(kind == 'attribution-only', 'relay upstream cannot be verified')
+    else:
+        require(transport in PUBLIC_SOURCES and source == transport
+                and kind == 'selected-public-endpoint', 'source and transport mismatch')
+    return {'transport_source': transport, 'source': source, 'source_kind': kind}
+
+
+def collection_provenance(rpc):
+    endpoint = rpc.endpoint
+    if endpoint in PUBLIC_SOURCES:
+        return {'source': endpoint, 'transport_source': endpoint,
+                'source_kind': 'selected-public-endpoint'}
+    require(isinstance(endpoint, str) and re.fullmatch(
+        r'http://127\.0\.0\.1:[1-9][0-9]{0,4}/rpc/1', endpoint), 'unknown RPC transport')
+    return {'source': PUBLIC_RPC, 'transport_source': 'worker-provided-relay',
+            'source_kind': 'attribution-only'}
+
+
 def collect(rpc, target, expected=None):
     require(quantity(rpc.call('eth_chainId', [])) == 1, 'endpoint is not Ethereum mainnet')
     block = rpc.call('eth_getBlockByNumber', ['finalized', False])
@@ -173,7 +205,7 @@ def collect(rpc, target, expected=None):
     after = rpc.call('eth_getBlockByNumber', [block['number'], False])
     require(isinstance(after, dict) and fixed_hex(after['hash'], 32) == block['hash'],
             'block changed during collection')
-    report = {'schema': SCHEMA, 'chain_id': 1, 'source': PUBLIC_RPC, 'block': block,
+    report = {'schema': CURRENT_SCHEMA, 'chain_id': 1, **collection_provenance(rpc), 'block': block,
               'target': address(target), 'nodes': nodes,
               'effective_address': nodes[-1]['address'], 'effective_code_hash': nodes[-1]['code_hash'],
               'expected_effective_hash': fixed_hex(expected, 32) if expected else None}
@@ -183,11 +215,11 @@ def collect(rpc, target, expected=None):
 
 def verify(report):
     """Check report consistency, not RPC honesty or consensus inclusion."""
-    require(report['schema'] == SCHEMA and type(report['chain_id']) is int and report['chain_id'] == 1,
+    require(report['schema'] in (SCHEMA, CURRENT_SCHEMA) and type(report['chain_id']) is int and report['chain_id'] == 1,
             'wrong report schema or chain')
     quantity(report['block']['number'])
     fixed_hex(report['block']['hash'], 32)
-    require(report['source'] == PUBLIC_RPC, 'unexpected public source attribution')
+    provenance(report)
     nodes = report['nodes']
     require(isinstance(nodes, list) and 1 <= len(nodes) <= MAX_DEPTH + 1, 'invalid node count')
     current, seen = address(report['target']), set()
@@ -237,6 +269,7 @@ def main():
             verify(report)
             print(json.dumps({'verified': True, 'effective_address': report['effective_address'],
                               'effective_code_hash': report['effective_code_hash'],
+                              'provenance': provenance(report),
                               'scope': 'offline consistency only; not chain authenticity'}, indent=2))
         else:
             expected = fixed_hex(args.expect_effective_hash, 32) if args.expect_effective_hash else None

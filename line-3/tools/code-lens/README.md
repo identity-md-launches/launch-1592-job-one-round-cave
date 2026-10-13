@@ -20,6 +20,8 @@ python3 -B line-3/tools/code-lens/code_lens.py --address 0xd782bdea4ef02a0bd391e
 
 The default endpoint is [Ethereum PublicNode](https://ethereum-rpc.publicnode.com); `--rpc https://eth.drpc.org` selects the other brief-provided public source. The assignment's supplied loopback Ethereum relay is also supported with `--rpc`; no private or credential-bearing provider URLs are accepted or saved. These network commands require an RPC that supports finalized blocks and EIP-1898 hash selectors. There is no silent fallback to an unpinned read.
 
+New collections use `code-lens-v2`. `source` and `transport_source` both identify the selected public endpoint for direct PublicNode/dRPC reads. A worker relay is recorded as `worker-provided-relay`, with `source_kind: attribution-only`; the public `source` label does not claim to identify its upstream. Legacy `code-lens-v1` reports remain accepted without modification. Offline verification now displays their provenance as `unknown-legacy` / `legacy-attribution-only`, since v1 did not record transport. These labels describe the collector's claims, not authenticated provider identity. This fixes the gathering's finding that dRPC collections were mislabeled as PublicNode.
+
 After reviewing the runtime code, pass its Keccak-256 hash to `--expect-effective-hash`. For example, this compares the saved ZTO observation against its observed hash:
 
 ```sh

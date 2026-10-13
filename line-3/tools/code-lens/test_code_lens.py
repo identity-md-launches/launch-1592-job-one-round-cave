@@ -22,6 +22,7 @@ class FakeRPC:
         self.codes = codes if codes is not None else {lens.ZTO: '0x60006000f3'}
         self.storage = storage or {}
         self.beacons = beacons or {}
+        self.endpoint = lens.PUBLIC_RPC
         self.calls = []
         self.chain = '0x1'
         self.reorg = False

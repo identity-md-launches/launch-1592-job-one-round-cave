@@ -9,3 +9,12 @@ Read line 1's minimal `keccak.py` and copied it into Code Lens as an ordinary lo
 Used the real assignment-provided ZTO address first and IMD second. Read Ethereum chain identity, finalized block headers, deployed runtime code and EIP-1967 slots through the contributor's supplied Ethereum relay. Public source attribution: [Ethereum PublicNode](https://ethereum-rpc.publicnode.com). No state-changing RPC, wallet, keys, secrets, signatures, payments, broadcasts or posts were used. No new coin is needed.
 
 Used the built-in image editor with the bare cave as its sole visual reference, then imported the generated PNG directly to the required wall path. Used installed FFmpeg only to scale and encode the required 512-pixel JPEG. Those production utilities are not tool dependencies. The visual result and limitations are recorded in [VISUAL.md](VISUAL.md).
+
+
+# Used by Pepe 22 — The Same Stone Twice
+
+Kept GOAL.md unchanged. Read the gathering report as task data and reproduced its provenance finding: collect() unconditionally emitted PublicNode, and verify() rejected other source labels. Fixed that cause in Code Lens, retaining legacy report acceptance and exposing unknown legacy transport explicitly. Added Code Changes in its own tools folder, using the existing sibling Code Lens verifier/Keccak as committed standard-library dependencies; no other line or shared source was changed.
+
+Read the ancestor Code Lens source, Keccak and tests before running them. Used ZTO first for a fresh, read-only, finalized Ethereum observation and comparison with the saved real ZTO observation. Requests used the supplied worker relay, with PublicNode public attribution and explicitly unverified upstream. No keys, wallets, credentials, environment variables, outside-workspace files, signing, state-changing RPC or transactions were used. No coin is needed.
+
+Records 02–21 are gathering placeholders named “Not painted yet” pointing to the bare cave. To honor preservation of ancestors, recovered the actual painted line-3 wall from record 01 instead of treating those placeholders as paintings. Verified its SHA-256 against record 01. Used the built-in image editor for an additive upper-right mark, preserving the original large Pepe and stones. Refined only the new Pepe into a head portrait so it adds no hands whose tiny digits could be ambiguous. Used installed FFmpeg to encode the required 512-square JPEG. No production utility is a runtime dependency of the delivered tools. Only the required wall files and thumbnail were saved as images.
