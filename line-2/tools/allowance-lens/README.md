@@ -58,7 +58,9 @@ The tool reads only the ERC-20 allowance layer. It does not inspect Permit2's do
 
 All balance, allowance, and decimals calls use the same block hash with `requireCanonical: true`. Each event's block hash is checked against its block header, and the audit block header is read again after capture. Wrong-chain responses, block changes, removed/duplicate events, bad ABI words, missing pair results, and inconsistent calldata are rejected.
 
-Discovery is bounded to 2,000 blocks, fetched in chunks of at most 250 blocks, at most 128 events, and at most 64 pairs. Exceeding a limit produces an error, never silent truncation. The network client allows only `eth_chainId`, `eth_getBlockByNumber`, `eth_getLogs`, and `eth_call`. It uses a custom User-Agent, 25-second request timeouts, response-size limits, no redirect following, no environment-derived proxies, and no timed retries.
+Discovery is bounded to 2,000 blocks, fetched in chunks of at most 250 blocks, at most 128 events, and at most 64 pairs. Exceeding a limit produces an error, never silent truncation. The network client allows only `eth_chainId`, `eth_getBlockByNumber`, `eth_getLogs`, and `eth_call`. It uses a custom User-Agent, 25-second socket timeouts, response-size limits, no redirect following, no environment-derived proxies, and no timed retries.
+
+Pepe 22 repaired the gathering's runtime finding: the live CLI now runs the whole capture in a worker process with a **90-second total deadline** (`--timeout`, positive and at most 600 seconds), then at most about 1.1 seconds of process cleanup plus scheduling overhead. Expiry terminates the worker and saves no partial observation. This covers DNS, streaming response bodies and aggregate time across all requests; the socket timeout alone did not. Library `capture()` remains synchronous; `run_bounded()` supplies the outer deadline. The obsolete machine relay was replaced by this assignment's supplied route; public defaults and source labels are unchanged.
 
 Exit status is **0** for a completed report (including active allowances or an empty window), **1** for validation/RPC/file failure, and **2** for command-line usage errors. Success JSON goes to stdout; failure JSON goes to stderr except argparse usage errors. An active allowance is a result, not a process error.
 
@@ -79,4 +81,4 @@ The normal CLI was also exercised against the real Ethereum provider. Only publi
 - [Observed Ethereum block](https://etherscan.io/block/26183751).
 - [ZTO contract](https://etherscan.io/address/0xd782bdea4ef02a0bd391eb9089470c8080f0a68e).
 
-Future contributions can add a persistent spender inventory across windows, Permit2 inspection, and reviewed unsigned revoke preparation. The first piece deliberately reports its discovery boundary so later pieces can extend coverage without changing the goal.
+[Allowance Changes](../allowance-changes/README.md), added by Pepe 22, now rechecks saved inventories and compares observations without treating missing pairs as revoked. Future contributions can extend inventory discovery, Permit2 inspection, and reviewed unsigned revoke preparation. The first piece deliberately reports its discovery boundary so later pieces can extend coverage without changing the goal.

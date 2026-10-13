@@ -4,6 +4,8 @@
 import argparse
 import datetime
 import json
+import math
+import multiprocessing
 from pathlib import Path
 import re
 import sys
@@ -14,7 +16,9 @@ TOKENS = {
     'IMD': '0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7',
 }
 PUBLIC_RPC = 'https://ethereum-rpc.publicnode.com'
-ENDPOINTS = {PUBLIC_RPC, 'https://eth.drpc.org', 'http://127.0.0.1:37401/rpc/1'}
+PUBLIC_ENDPOINTS = {PUBLIC_RPC, 'https://eth.drpc.org'}
+ASSIGNMENT_RPC = 'http://127.0.0.1:35045/rpc/1'
+ENDPOINTS = PUBLIC_ENDPOINTS | {ASSIGNMENT_RPC}
 APPROVAL = '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925'
 MAX_UINT = (1 << 256) - 1
 MAX_BLOCKS, MAX_LOGS, MAX_PAIRS = 2000, 128, 64
@@ -113,6 +117,58 @@ class RPC:
         return result['result']
 
 
+def _bounded_worker(connection, function, args, kwargs):
+    """Only the parent writes deliverables; a terminated read leaves no partial file."""
+    try:
+        connection.send((True, function(*args, **kwargs)))
+    except Exception as exc:
+        connection.send((False, str(exc)))
+    finally:
+        connection.close()
+
+
+def run_bounded(function, args=(), kwargs=None, timeout=90):
+    """Bound an entire live read, including DNS and slow response bodies.
+
+    A separate process is required: urllib socket timeouts alone do not bound
+    multiple requests, DNS, or a server slowly streaming its response.
+    Callers must use the usual __main__ guard when using this from scripts.
+    """
+    require(type(timeout) in (int, float) and math.isfinite(timeout)
+            and 0 < timeout <= 600, 'timeout must be finite and in (0, 600] seconds')
+    context = multiprocessing.get_context('spawn')
+    receiver, sender = context.Pipe(duplex=False)
+    process = context.Process(target=_bounded_worker,
+                              args=(sender, function, args, kwargs or {}))
+    try:
+        process.start()
+        sender.close()
+        if not receiver.poll(timeout):
+            raise TimeoutError('live read exceeded total deadline of ' + str(timeout) + ' seconds')
+        try:
+            ok, result = receiver.recv()
+        except EOFError as exc:
+            raise ValueError('live read worker exited without a result') from exc
+        require(ok, result if not ok else '')
+        return result
+    finally:
+        receiver.close()
+        sender.close()
+        if process.pid is not None:
+            process.join(0.1)
+            if process.is_alive():
+                process.terminate()
+                process.join(0.5)
+            if process.is_alive():
+                process.kill()
+                process.join(0.5)
+            process.close()
+
+
+def capture_endpoint(endpoint, *args):
+    return capture(RPC(endpoint), *args)
+
+
 def decode_logs(logs, token, start, end, owner=None):
     require(isinstance(logs, list) and len(logs) <= MAX_LOGS, 'too many logs; narrow the window')
     pairs, seen, decoded = set(), set(), []
@@ -205,7 +261,7 @@ def report(observation):
     require(type(observation['chain_id']) is int and observation['chain_id'] == 1, 'wrong chain')
     name = observation['token']
     require(name in TOKENS and observation['token_address'] == TOKENS[name], 'wrong token')
-    require(observation['source'] in ENDPOINTS - {'http://127.0.0.1:37401/rpc/1'}, 'invalid source')
+    require(observation['source'] in PUBLIC_ENDPOINTS, 'invalid source')
     block = header(observation['block'])
     end = quantity(block['number'])
     query = observation['query']
@@ -313,15 +369,19 @@ def main(argv=None):
     parser.add_argument('--owner', help='filter discovery, or owner for explicit spenders')
     parser.add_argument('--spender', action='append', default=[], help='explicit spender; repeat as needed')
     parser.add_argument('--save', help='save a live observation inside the workspace')
+    parser.add_argument('--timeout', type=float, default=90,
+                        help='total live-read deadline in seconds, 0 < timeout <= 600 (default 90)')
     args = parser.parse_args(argv)
     try:
         if args.live:
             tag = hex(int(args.block)) if args.block.isdecimal() else args.block
-            observation = capture(RPC(args.rpc), args.token, tag, args.window, args.owner, args.spender)
+            observation = run_bounded(capture_endpoint,
+                (args.rpc, args.token, tag, args.window, args.owner, args.spender), timeout=args.timeout)
         else:
             require(not args.save and not args.owner and not args.spender
                     and args.token == 'ZTO' and args.window == 1500 and args.block == 'finalized'
-                    and args.rpc == PUBLIC_RPC, 'query and save options require --live')
+                    and args.rpc == PUBLIC_RPC and args.timeout == 90,
+                    'query and save options require --live')
             path = workspace_path(args.snapshot or Path(__file__).with_name('observation.json'))
             with path.open('rb') as stream:
                 data = stream.read(98_305)

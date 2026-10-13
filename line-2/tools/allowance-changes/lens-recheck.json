@@ -1,0 +1,26 @@
+{
+  "schema": "allowance-lens-observation-v1",
+  "source": "https://ethereum-rpc.publicnode.com",
+  "chain_id": 1,
+  "token": "ZTO",
+  "token_address": "0xd782bdea4ef02a0bd391eb9089470c8080f0a68e",
+  "block": {
+    "number": "0x18f8aa4",
+    "hash": "0xba406e0e0a50f2785b6eba5e3624a7e1ad88f1aa1c5d53476a25377759b10ebf",
+    "timestamp": "0x6ace48d7"
+  },
+  "query": {
+    "mode": "approval_window",
+    "from_block": 26184307,
+    "to_block": 26184356,
+    "owner": null,
+    "spenders": []
+  },
+  "logs": [],
+  "log_headers": {},
+  "raw": {
+    "decimals": "0x0000000000000000000000000000000000000000000000000000000000000012",
+    "balances": [],
+    "allowances": []
+  }
+}

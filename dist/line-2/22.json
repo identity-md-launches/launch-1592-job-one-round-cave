@@ -1,0 +1,30 @@
+{
+  "name": "The Remembered Cords",
+  "image": "https://api.imd.fun/artifacts/8c74960f19879858638fc620376ac3b3941231c0fc53cd751e5af02a4eadd8da",
+  "attributes": [
+    {
+      "trait_type": "Cave",
+      "value": "Moss"
+    },
+    {
+      "trait_type": "Wall",
+      "value": "Line 2"
+    },
+    {
+      "trait_type": "Number",
+      "value": 22
+    },
+    {
+      "trait_type": "Left behind",
+      "value": "Allowance Changes"
+    },
+    {
+      "trait_type": "Meaning",
+      "value": "Pepe compares the cords across two moments, remembering every permission."
+    },
+    {
+      "trait_type": "One thing",
+      "value": "ERC-20 spending-permission audits"
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "local_only": true,
+  "independent_certification": false,
+  "checks": [
+    {
+      "name": "ancestor regression",
+      "passed": true,
+      "detail": {
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "line-2/tools/allowance-lens",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 0.077,
+        "stderr": "test_capture_replays_real_responses_with_hash_pinning (test_allowance_lens.AllowanceLensTests.test_capture_replays_real_responses_with_hash_pinning) ... ok\ntest_duplicate_removed_and_out_of_window_logs_fail (test_allowance_lens.AllowanceLensTests.test_duplicate_removed_and_out_of_window_logs_fail) ... ok\ntest_empty_window_does_not_claim_wallet_is_safe (test_allowance_lens.AllowanceLensTests.test_empty_window_does_not_claim_wallet_is_safe) ... ok\ntest_event_amount_is_not_used_as_current_allowance (test_allowance_lens.AllowanceLensTests.test_event_amount_is_not_used_as_current_allowance) ... ok\ntest_explicit_pairs_do_not_scan_logs (test_allowance_lens.AllowanceLensTests.test_explicit_pairs_do_not_scan_logs) ... ok\ntest_finite_allowance_caps_spendable_amount (test_allowance_lens.AllowanceLensTests.test_finite_allowance_caps_spendable_amount) ... ok\ntest_integer_formatting_never_uses_float (test_allowance_lens.AllowanceLensTests.test_integer_formatting_never_uses_float) ... ok\ntest_log_header_mismatch_fails (test_allowance_lens.AllowanceLensTests.test_log_header_mismatch_fails) ... ok\ntest_missing_or_duplicate_state_results_fail (test_allowance_lens.AllowanceLensTests.test_missing_or_duplicate_state_results_fail) ... ok\ntest_offline_cli_never_constructs_rpc (test_allowance_lens.AllowanceLensTests.test_offline_cli_never_constructs_rpc) ... ok\ntest_offline_cli_rejects_live_query_options (test_allowance_lens.AllowanceLensTests.test_offline_cli_rejects_live_query_options) ... ok\ntest_owner_filter_limits_discovery (test_allowance_lens.AllowanceLensTests.test_owner_filter_limits_discovery) ... ok\ntest_owner_total_does_not_double_count_balance (test_allowance_lens.AllowanceLensTests.test_owner_total_does_not_double_count_balance) ... ok\ntest_query_limits_are_enforced_before_network (test_allowance_lens.AllowanceLensTests.test_query_limits_are_enforced_before_network) ... ok\ntest_real_observation_matches_recorded_report (test_allowance_lens.AllowanceLensTests.test_real_observation_matches_recorded_report) ... ok\ntest_reorg_is_rejected (test_allowance_lens.AllowanceLensTests.test_reorg_is_rejected) ... ok\ntest_shuffled_events_are_order_independent (test_allowance_lens.AllowanceLensTests.test_shuffled_events_are_order_independent) ... ok\ntest_transport_rejects_send_methods_before_opening (test_allowance_lens.AllowanceLensTests.test_transport_rejects_send_methods_before_opening) ... ok\ntest_workspace_boundary_rejected_without_reading (test_allowance_lens.AllowanceLensTests.test_workspace_boundary_rejected_without_reading) ... ok\ntest_wrong_chain_stops_before_state_queries (test_allowance_lens.AllowanceLensTests.test_wrong_chain_stops_before_state_queries) ... ok\ntest_wrong_chain_token_and_decimals_fail (test_allowance_lens.AllowanceLensTests.test_wrong_chain_token_and_decimals_fail) ... ok\ntest_zero_balance_is_not_revocation (test_allowance_lens.AllowanceLensTests.test_zero_balance_is_not_revocation) ... ok\n\n----------------------------------------------------------------------\nRan 22 tests in 0.026s\n\nOK\n"
+      }
+    },
+    {
+      "name": "new regression",
+      "passed": true,
+      "detail": {
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "line-2/tools/allowance-changes",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 0.498,
+        "stderr": "test_all_allowance_transitions_and_exact_integer_deltas (test_allowance_changes.ChangesTests.test_all_allowance_transitions_and_exact_integer_deltas) ... ok\ntest_backwards_timestamp_is_rejected (test_allowance_changes.ChangesTests.test_backwards_timestamp_is_rejected) ... ok\ntest_bad_raw_calldata_and_missing_response_fail (test_allowance_changes.ChangesTests.test_bad_raw_calldata_and_missing_response_fail) ... ok\ntest_bounded_worker_success_and_error (test_allowance_changes.ChangesTests.test_bounded_worker_success_and_error) ... ok\ntest_changed_decimals_are_not_compared (test_allowance_changes.ChangesTests.test_changed_decimals_are_not_compared) ... ok\ntest_changed_token_is_not_compared (test_allowance_changes.ChangesTests.test_changed_token_is_not_compared) ... ok\ntest_cli_requires_both_offline_inputs_and_explicit_refresh_inventory (test_allowance_changes.ChangesTests.test_cli_requires_both_offline_inputs_and_explicit_refresh_inventory) ... ok\ntest_conflicting_balance_between_disjoint_pairs_of_same_owner_fails (test_allowance_changes.ChangesTests.test_conflicting_balance_between_disjoint_pairs_of_same_owner_fails) ... ok\ntest_empty_balance_preserves_active_permission (test_allowance_changes.ChangesTests.test_empty_balance_preserves_active_permission) ... ok\ntest_invalid_deadlines_fail_before_start (test_allowance_changes.ChangesTests.test_invalid_deadlines_fail_before_start) ... ok\ntest_inventory_can_be_refreshed_again (test_allowance_changes.ChangesTests.test_inventory_can_be_refreshed_again) ... ok\ntest_missing_pair_is_unknown_not_zero (test_allowance_changes.ChangesTests.test_missing_pair_is_unknown_not_zero) ... ok\ntest_mixed_blocks_duplicate_pairs_and_empty_bundles_fail (test_allowance_changes.ChangesTests.test_mixed_blocks_duplicate_pairs_and_empty_bundles_fail) ... ok\ntest_newly_observed_is_not_newly_approved (test_allowance_changes.ChangesTests.test_newly_observed_is_not_newly_approved) ... ok\ntest_offline_command_cannot_construct_rpc (test_allowance_changes.ChangesTests.test_offline_command_cannot_construct_rpc) ... ok\ntest_order_independence (test_allowance_changes.ChangesTests.test_order_independence) ... ok\ntest_owner_cap_does_not_double_count_overlapping_spenders (test_allowance_changes.ChangesTests.test_owner_cap_does_not_double_count_overlapping_spenders) ... ok\ntest_real_capture_preserves_all_nineteen_pairs (test_allowance_changes.ChangesTests.test_real_capture_preserves_all_nineteen_pairs) ... ok\ntest_real_empty_recent_window_does_not_erase_nineteen_permissions (test_allowance_changes.ChangesTests.test_real_empty_recent_window_does_not_erase_nineteen_permissions) ... ok\ntest_refresh_replays_real_capture_with_hash_pins_and_no_event_scan (test_allowance_changes.ChangesTests.test_refresh_replays_real_capture_with_hash_pins_and_no_event_scan) ... ok\ntest_reorg_of_either_header_is_rejected (test_allowance_changes.ChangesTests.test_reorg_of_either_header_is_rejected) ... ok\ntest_requested_numeric_block_must_match (test_allowance_changes.ChangesTests.test_requested_numeric_block_must_match) ... ok\ntest_retired_relay_is_rejected_and_current_route_is_allowed (test_allowance_changes.ChangesTests.test_retired_relay_is_rejected_and_current_route_is_allowed) ... ok\ntest_same_block_conflicts_fail_but_identical_replay_works (test_allowance_changes.ChangesTests.test_same_block_conflicts_fail_but_identical_replay_works) ... ok\ntest_same_height_different_hash_and_backwards_time_fail (test_allowance_changes.ChangesTests.test_same_height_different_hash_and_backwards_time_fail) ... ok\ntest_total_deadline_terminates_blocked_worker (test_allowance_changes.ChangesTests.test_total_deadline_terminates_blocked_worker) ... ok\ntest_totals_exclude_unmeasured_pairs (test_allowance_changes.ChangesTests.test_totals_exclude_unmeasured_pairs) ... ok\ntest_workspace_and_overwrite_guards (test_allowance_changes.ChangesTests.test_workspace_and_overwrite_guards) ... ok\ntest_wrong_chain_fails_before_any_state_reads (test_allowance_changes.ChangesTests.test_wrong_chain_fails_before_any_state_reads) ... ok\n\n----------------------------------------------------------------------\nRan 29 tests in 0.442s\n\nOK\n"
+      }
+    },
+    {
+      "name": "ancestor demo",
+      "passed": true,
+      "detail": {
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "line-2/tools/allowance-lens/allowance_lens.py"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 0.031,
+        "stderr": ""
+      }
+    },
+    {
+      "name": "new demo",
+      "passed": true,
+      "detail": {
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "line-2/tools/allowance-changes/allowance_changes.py"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 0.032,
+        "stderr": ""
+      }
+    },
+    {
+      "name": "real inventory evidence",
+      "passed": true,
+      "detail": {
+        "before_block": {
+          "block_number": 26183751,
+          "block_hash": "0x1da3e2b8fcff2b28f8048862076f04b03db439c94f518681039870a9f1cae19d",
+          "block_time_utc": "2026-10-13T13:04:23+00:00",
+          "sources": [
+            "https://ethereum-rpc.publicnode.com"
+          ]
+        },
+        "after_block": {
+          "block_number": 26184324,
+          "block_hash": "0x2e4f68bb511a5840f25f4df22a81a6a18f4eb9d76bab521ed36dac3d6ef023ad",
+          "block_time_utc": "2026-10-13T14:59:35+00:00",
+          "sources": [
+            "https://ethereum-rpc.publicnode.com"
+          ]
+        },
+        "coverage": {
+          "before_pairs": 19,
+          "after_pairs": 19,
+          "compared_pairs": 19,
+          "all_previous_pairs_rechecked": true
+        },
+        "counts": {
+          "unchanged": 19
+        },
+        "balance_changed_pairs": 2
+      }
+    },
+    {
+      "name": "real missing coverage demo",
+      "passed": true,
+      "detail": {
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "line-2/tools/allowance-changes/allowance_changes.py",
+          "--before",
+          "line-2/tools/allowance-lens/observation.json",
+          "--after",
+          "line-2/tools/allowance-changes/lens-recheck.json"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 0.034,
+        "stderr": ""
+      }
+    },
+    {
+      "name": "CLI deadline without partial file",
+      "passed": true,
+      "detail": {
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "line-2/tools/allowance-lens/allowance_lens.py",
+          "--live",
+          "--window",
+          "1",
+          "--rpc",
+          "http://127.0.0.1:35045/rpc/1",
+          "--timeout",
+          "0.000001",
+          "--save",
+          "test/scratch/deadline-should-not-exist.json"
+        ],
+        "exit_code": 1,
+        "duration_seconds": 0.137,
+        "stderr": "{\"error\": \"live read exceeded total deadline of 1e-06 seconds\"}\n"
+      }
+    },
+    {
+      "name": "PNG decode, CRCs and inherited size",
+      "passed": true,
+      "detail": {
+        "format": "PNG RGB 8-bit",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2783895,
+        "sha256": "8c74960f19879858638fc620376ac3b3941231c0fc53cd751e5af02a4eadd8da",
+        "paths": [
+          "artifacts/line-2/wall-v2.png",
+          "artifacts/line-2/wall.png"
+        ]
+      }
+    },
+    {
+      "name": "JPEG frame",
+      "passed": true,
+      "detail": {
+        "format": "baseline JPEG, three components, 8-bit",
+        "width": 512,
+        "height": 512,
+        "bytes": 54488
+      }
+    },
+    {
+      "name": "record contract",
+      "passed": true,
+      "detail": {
+        "new_record": "dist/line-2/22.json",
+        "number": 22
+      }
+    },
+    {
+      "name": "ancestor preservation",
+      "passed": true,
+      "detail": "GOAL.md and all 21 older records are byte-for-byte unchanged"
+    },
+    {
+      "name": "scope, file sizes and unstaged image outputs",
+      "passed": true,
+      "detail": "all changes allowed; no artifact PNG tracked; no extra artifact files"
+    },
+    {
+      "name": "chosen visual review",
+      "passed": true,
+      "detail": {
+        "unmet_visual_requirements_observed": [],
+        "review": "Full inherited wall, edited PNG and JPEG inspected; two inherited five-digit hands; no added hands.",
+        "limitation": "Generative preservation is visually reviewed, not pixel-identical."
+      }
+    },
+    {
+      "name": "diff whitespace",
+      "passed": true,
+      "detail": {
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 0.003,
+        "stderr": ""
+      }
+    }
+  ]
+}
