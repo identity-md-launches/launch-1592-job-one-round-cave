@@ -1,0 +1,31 @@
+{
+  "contributor_check_only": true,
+  "png": {
+    "format": "PNG RGB 8-bit",
+    "width": 1254,
+    "height": 1254,
+    "bytes": 2857306,
+    "sha256": "1250c32eba2c719780a358071cad37f9c6d4ff54eecec10a592c53da14107c55",
+    "crc_and_raster_check": true
+  },
+  "jpeg": {
+    "format": "JPEG baseline RGB 8-bit",
+    "width": 512,
+    "height": 512,
+    "bytes": 54443
+  },
+  "new_record": 22,
+  "prior_records_unchanged": true,
+  "goal_byte_identical": true,
+  "allowed_paths_only": true,
+  "all_non_artifact_files_below_100kb": true,
+  "new_offline_tests_passed": 17,
+  "ancestor_offline_tests_passed": 16,
+  "new_live_quoter_matches": 11,
+  "ancestor_live_quoter_matches": 8,
+  "unmet_visual_requirements_observed": [],
+  "visual_limitations": [
+    "Generative edit; exact pixel identity of ancestor strokes and rock is not guaranteed.",
+    "JPEG preview reduces fine finger and rock detail."
+  ]
+}

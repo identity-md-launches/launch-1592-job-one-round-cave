@@ -74,7 +74,7 @@ class RPC:
     def __init__(self, endpoint):
         parsed = urllib.parse.urlsplit(endpoint)
         require(parsed.username is None and parsed.password is None, 'credential URLs are not accepted')
-        require(parsed.scheme == 'https' or endpoint == 'http://127.0.0.1:34793/rpc/1',
+        require(parsed.scheme == 'https' or endpoint == 'http://127.0.0.1:34689/rpc/1',
                 'use HTTPS or the assignment Ethereum endpoint')
         require(bool(parsed.hostname) and not parsed.query and not parsed.fragment, 'invalid RPC URL')
         self.endpoint = endpoint
