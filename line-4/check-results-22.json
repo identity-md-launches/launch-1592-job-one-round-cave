@@ -1,0 +1,151 @@
+{
+  "contributor_checks_only": true,
+  "date": "2026-10-13",
+  "offline_tests": {
+    "new": 36,
+    "ancestor": 20,
+    "failed": 0
+  },
+  "offline_demo": {
+    "exit": 0,
+    "verdict": "unchanged",
+    "blocks_apart": 607,
+    "uint256_delta": "0"
+  },
+  "live_checks": [
+    {
+      "endpoint": "https://ethereum-rpc.publicnode.com",
+      "kind": "finalized ZTO totalSupply recheck",
+      "exit": 0,
+      "block": 26184452
+    },
+    {
+      "endpoint": "https://ethereum-rpc.publicnode.com",
+      "kind": "explicit finalized height recheck",
+      "exit": 0,
+      "block": 26184452
+    }
+  ],
+  "visual_review": {
+    "full_png_inspected": true,
+    "jpeg_inspected": true,
+    "visible_hand_digits": 5,
+    "unmet_requirements_observed": [],
+    "limit": "Background and ancestor preservation assessed visually, not guaranteed pixel-identical."
+  },
+  "structural_checks": [
+    {
+      "check": "artifacts/line-4/wall-v2.png signature",
+      "passed": true
+    },
+    {
+      "check": "artifacts/line-4/wall-v2.png complete CRC-checked PNG",
+      "passed": true
+    },
+    {
+      "check": "artifacts/line-4/wall-v2.png dimensions and format",
+      "passed": true,
+      "details": {
+        "format": "PNG RGB 8-bit",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2690381
+      }
+    },
+    {
+      "check": "continuing wall is identical",
+      "passed": true
+    },
+    {
+      "check": "PNGs left untracked",
+      "passed": true
+    },
+    {
+      "check": "JPEG start and end",
+      "passed": true
+    },
+    {
+      "check": "thumbnail dimensions and format",
+      "passed": true,
+      "details": {
+        "format": "baseline JPEG",
+        "width": 512,
+        "height": 512,
+        "bytes": 52357
+      }
+    },
+    {
+      "check": "baseline JPEG frame present",
+      "passed": true
+    },
+    {
+      "check": "record exact top-level shape",
+      "passed": true
+    },
+    {
+      "check": "record image hashes finished wall",
+      "passed": true
+    },
+    {
+      "check": "record exact attribute shape",
+      "passed": true
+    },
+    {
+      "check": "record traits",
+      "passed": true
+    },
+    {
+      "check": "number is one more than original JSON count",
+      "passed": true
+    },
+    {
+      "check": "exactly one new numbered JSON",
+      "passed": true
+    },
+    {
+      "check": "all ancestor records, thumbnail, goal and tools unchanged",
+      "passed": true,
+      "details": {
+        "checked_paths": 30
+      }
+    },
+    {
+      "check": "frozen core matches ancestor",
+      "passed": true
+    },
+    {
+      "check": "baseline matches ancestor",
+      "passed": true
+    },
+    {
+      "check": "changed and new paths within scope",
+      "passed": true,
+      "details": {
+        "changed": [
+          "line-4/USED.md"
+        ],
+        "new": [
+          "dist/line-4/22.jpg",
+          "dist/line-4/22.json",
+          "line-4/CHECKS-22.md",
+          "line-4/VISUAL-22.md",
+          "line-4/tools/call-changes/README.md",
+          "line-4/tools/call-changes/call_changes.py",
+          "line-4/tools/call-changes/rehearse_core.py",
+          "line-4/tools/call-changes/test_call_changes.py",
+          "line-4/tools/call-changes/zto-after.json",
+          "line-4/tools/call-changes/zto-before.json",
+          "line-4/tools/call-changes/zto-pinned-recheck.json"
+        ]
+      }
+    },
+    {
+      "check": "all submitted non-artifact files under 100 KB",
+      "passed": true
+    },
+    {
+      "check": "only required new pictures",
+      "passed": true
+    }
+  ]
+}
